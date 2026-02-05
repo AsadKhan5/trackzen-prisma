@@ -1,0 +1,41 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+    superAdmin
+    Operations
+    siteEngineer
+    sales
+    accounts
+}
+
+enum Exprience {
+    fresher
+    junior
+    intermediate
+    senior
+    expert
+}
+
+model User {
+    id         Int       @id @default(autoincrement())
+    email      String    @unique
+    name       String
+    empId      String    @unique
+    role       Role      @default(siteEngineer)
+    address    String?
+    phone      String
+    password   String
+    experience Exprience @default(fresher)
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+
+    @@index([email, empId, role])
+    @@map("users")
+}
